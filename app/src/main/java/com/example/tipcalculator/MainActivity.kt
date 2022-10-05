@@ -3,6 +3,7 @@ package com.example.tipcalculator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
@@ -44,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
 private fun calculateTip(
     amount: Double,
-    tipPercent: Double = 15.0
+    tipPercent: Double
 ) : String {
     val tip = tipPercent / 100 * amount
     return NumberFormat.getCurrencyInstance().format(tip)
@@ -62,7 +63,11 @@ fun DefaultPreview() {
 fun TipTimeScreen() {
     var amountInput by remember { mutableStateOf("") }
     val amount = amountInput.toDoubleOrNull() ?: 0.0
-    val tip = calculateTip(amount)
+
+    var tipPercent by remember { mutableStateOf("") }
+    val tipInput = tipPercent.toDoubleOrNull() ?: 0.0
+
+    val tip = calculateTip(amount, tipInput)
 
     Column(
         modifier = Modifier.padding(32.dp),
@@ -75,7 +80,12 @@ fun TipTimeScreen() {
         )
         Spacer(Modifier.height(16.dp))
         EditNumberField(value = amountInput,
-                        onValueChange = { amountInput = it })
+                        onValueChange = { amountInput = it },
+                        label = R.string.cost_of_service)
+
+        EditNumberField(value = tipPercent,
+                        onValueChange = { tipPercent = it },
+                        label = R.string.tip_percentage)
         Spacer(Modifier.height(24.dp))
         Text(
             text = stringResource(R.string.tip_amount, tip),
@@ -88,11 +98,13 @@ fun TipTimeScreen() {
 
 @Composable
 fun EditNumberField(value: String,
-                    onValueChange: (String) -> Unit) {
+                    onValueChange: (String) -> Unit,
+                    @StringRes label : Int
+) {
     TextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(stringResource(R.string.cost_of_service)) },
+        label = { Text(stringResource(label)) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)

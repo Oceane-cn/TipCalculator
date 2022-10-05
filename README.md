@@ -23,3 +23,8 @@ La semaine prochaine (le 6 Octobre 2022) après le cours donc vers midi.
 ## Reference
 
 Cette application est très fortement inspiré de l'application Tip Calculator que Google a développé pour apprendre Android. On ne fait qu'y ajouter la feature permettant de spécifier le pourboire.
+
+
+Groupe :
+Océane Chaduc-Nguyen
+Tom Arquetout
